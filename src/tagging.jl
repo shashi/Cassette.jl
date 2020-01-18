@@ -79,7 +79,7 @@ end
 # the compiler to optimize away the fetch once we have support for it, e.g. loop invariant
 # code motion.
 Base.@pure @noinline function fetch_tagged_module(context::Context, m::Module)
-    return Tagged(context, m, Meta(NoMetaData(), fetch_modulemeta(context, m)))
+    return m
 end
 
 Base.@pure @noinline function fetch_modulemeta(context::Context, m::Module)
@@ -559,6 +559,13 @@ function tagged_nameof(context::ContextTagged{T}, x::Tagged{T,Module}) where {T}
 end
 
 #=== tagged_globalref ===#
+#
+function tagged_globalref(context::ContextTagged,
+                                  m::Module,
+                                  name,
+                                  primal)
+    return primal
+end
 
 @inline function tagged_globalref(context::ContextTagged{T},
                                   m::Tagged{T},
